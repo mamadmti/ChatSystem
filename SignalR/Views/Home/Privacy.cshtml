@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Public Chat";
+}
+
+@*<div class="text-center">
+        <h1 class="display-4"></h1>
+
+    </div>*@
+
+
+<div class="container"> 
+    <p>First you have to Join a group</p>
+    <div class="row">
+        User Group: <input type="text" id="GroupId" />
+        <input type="button" id="JoinBtn" value="Join Group" />
+    </div>
+    <div class="row">
+        <div class="col-md-12"></div>
+        <div class="col-md-12">
+            User Name: <input type="text" id="userName" />
+            User Message: <input type="text" id="userMessage" />
+            
+            <input type="button" id="BtnGroup" value="Send Message" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/SignalR/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+
+<script>
+
+
+    //this block of code is used to send message.
+    document.getElementById("BtnGroup").addEventListener("click", function (event) {
+        //alert(user, message, GroupId);
+        var user = document.getElementById("userName").value;
+        var message = document.getElementById("userMessage").value;
+        var GroupId = document.getElementById("GroupId").value;
+        //alert(user, message, GroupId);
+        connection.invoke("SendMessageGroup", user, message, GroupId).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+
+    document.getElementById("JoinBtn").addEventListener("click", function (event) {
+        var GroupId = document.getElementById("GroupId").value;
+        //alert(GroupId);
+        connection.invoke("JoinGroup", GroupId).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+</script>
